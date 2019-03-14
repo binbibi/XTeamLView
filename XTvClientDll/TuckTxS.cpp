@@ -301,6 +301,8 @@ VOID TuckMsg::StartHook()
 
 	g_strPath.Empty();
 
+	MyAtlTraceW(L"[%s]进来了\n", __FUNCTIONW__);
+
 	/// uuid
 	GUID guid;
 	CoCreateGuid(&guid);
@@ -327,7 +329,7 @@ VOID TuckMsg::StartHook()
 	TrueFindFirstFileW = (FindFirstFileWPtr)DetourFindFunction("kernel32.dll", "FindFirstFileW");
 	TrueKernelBaseRegQueryValueExW = (KernelBaseRegQueryValueExWPtr)DetourFindFunction("kernelbase.dll", "RegQueryValueExW");
 	
-	
+	// 比较标准的用法
 	if (NO_ERROR == DetourTransactionBegin())
 	{
 		if (NO_ERROR == DetourUpdateThread(GetCurrentThread()))
@@ -338,7 +340,19 @@ VOID TuckMsg::StartHook()
 				{
 					MyAtlTraceA("Hook KernelBase RegQueryValueExW");
 				}
+				else
+				{
+					DetourTransactionAbort();
+				}
 			}
+			else
+			{
+				DetourTransactionCommit();
+			}
+		}
+		else
+		{
+			DetourTransactionCommit();
 		}
 	}
 	
@@ -352,6 +366,10 @@ VOID TuckMsg::StartHook()
 				{
 					MyAtlTraceA("Hook ?Get@CWbemObject@@UAGJPBGJPAUtagVARIANT@@PAJ2@Z");
 				}
+			}
+			else
+			{
+				DetourTransactionCommit();
 			}
 		}
 	}
@@ -367,6 +385,10 @@ VOID TuckMsg::StartHook()
 					MyAtlTraceA("Hook Kernel32 RegQueryValueExW");
 				}
 			}
+			else
+			{
+				DetourTransactionCommit();
+			}
 		}
 	}
 
@@ -380,6 +402,10 @@ VOID TuckMsg::StartHook()
 				{
 					MyAtlTraceA("Hook GetVolumeInformationW");
 				}
+			}
+			else
+			{
+				DetourTransactionCommit();
 			}
 		}
 	}
@@ -395,6 +421,10 @@ VOID TuckMsg::StartHook()
 				{
 					MyAtlTraceA("Hook FindFirstFileW");
 				}
+			}
+			else
+			{
+				DetourTransactionCommit();
 			}
 		}
 	}
