@@ -9,7 +9,3 @@ XTvClient.exe和dll放在Teamview的安装目录下面,然后每次使用的时�
 
 GPL许可
 
-## 支持:
-
-![WeChat](WeChat.jpg)
-
