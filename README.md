@@ -9,3 +9,5 @@ XTvClient.exe和dll放在Teamview的安装目录下面,然后每次使用的时�
 
 GPL许可
 
+## append
+每个ID大概24h后就会失效弹窗 重新启动下XTvClient就好
